@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfferConsoleApp.Common
+namespace OfferConsoleApp.Utils
 {
     public enum OfferCode
     {
