@@ -1,6 +1,5 @@
 ﻿using global::OfferConsoleApp;
-using OfferConsoleApp.Business;
-using OfferConsoleApp.Utils;
+using global::OfferConsoleApp.Common;
 
 namespace DeliveryAppTest.Tests
 {

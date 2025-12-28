@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace OfferConsoleApp.Utils
+namespace OfferConsoleApp.Common
 {
     public static class GlobalValues
     {
