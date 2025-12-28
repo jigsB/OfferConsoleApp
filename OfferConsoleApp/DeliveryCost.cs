@@ -1,8 +1,6 @@
-﻿using OfferConsoleApp.Data;
-using OfferConsoleApp.Models;
-using OfferConsoleApp.Utils;
+﻿using OfferConsoleApp.Common;
 
-namespace OfferConsoleApp.Business
+namespace OfferConsoleApp
 {
     public static class DeliveryCost
     {
@@ -18,14 +16,16 @@ namespace OfferConsoleApp.Business
         // Method to calculate discount
         public static double GetDiscount(double cost, OfferCode offerCode, double weight, double distance)
         {
+            double discount = 0;
 
-            var rule = DummyDatabase.DiscountRules.FirstOrDefault(r =>
-         r.OfferCode == offerCode &&
-         weight <= r.MaxWeight &&
-         distance >= r.MinDistance &&
-         distance <= r.MaxDistance);
+            if (offerCode == OfferCode.OFR001 && weight <= 70 && distance >= 0 && distance <= 200)
+                discount = cost * 0.10; // 10% discount
+            else if (offerCode == OfferCode.OFR002 && weight <= 100 && distance >= 50 && distance <= 150)
+                discount = cost * 0.07; // 07% discount
+            else if (offerCode == OfferCode.OFR003 && weight <= 200 && distance >= 50 && distance <= 250)
+                discount = cost * 0.05; // 05% discount
 
-            return rule == null ? 0 : cost * rule.DiscountPercentage;
+            return discount;
         }
 
         // Method to display available offer
@@ -42,7 +42,7 @@ namespace OfferConsoleApp.Business
         // Method to display formatted output
         public static void DisplayResult(double baseCost, double weight, double distance, string offerCode, double deliveryCost, double discount)
         {
-            string discountMessage = string.Empty;
+            string discountMessage= string.Empty;
             double total = deliveryCost - discount;
 
             Console.WriteLine($"Base.delivery cost: {baseCost}");
@@ -50,8 +50,8 @@ namespace OfferConsoleApp.Business
             Console.WriteLine($"Offer code: {offerCode}");
             Console.WriteLine();
 
-            discountMessage = discount > 0 ? string.Format(GlobalValues.AppliedDiscountMessage, (int)OfferCode.OFR001, deliveryCost)
-                                        : GlobalValues.NoDiscountMessage;
+            discountMessage = discount > 0 ? string.Format(GlobalValues.AppliedDiscountMessage, (int)OfferCode.OFR001, deliveryCost) 
+                                        : GlobalValues.NoDiscountMessage; 
 
             Console.WriteLine("Delivery Cost".PadRight(25) + $"{deliveryCost,10:0.00}");
             Console.WriteLine($"{baseCost} + ({weight} * {WeightRate}) + ({distance} * {DistanceRate})");

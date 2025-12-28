@@ -1,7 +1,5 @@
 ﻿using global::OfferConsoleApp;
-using global::OfferConsoleApp.Utils;
-using OfferConsoleApp.Business;
-using OfferConsoleApp.Models;
+using global::OfferConsoleApp.Common;
 
 namespace DeliveryAppTest.Tests
 {
@@ -15,7 +13,7 @@ namespace DeliveryAppTest.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.All(result, p => Assert.False(string.IsNullOrEmpty(p.Id)));
+            Assert.All(result, p => Assert.False(string.IsNullOrEmpty(p.Name)));
         }
 
         [Fact]
@@ -24,9 +22,9 @@ namespace DeliveryAppTest.Tests
             // Arrange
             var packages = new List<Package>
             {
-                new Package { Id = "PKG1", Weight = 30 },
-                new Package { Id = "PKG2", Weight = 40 },
-                new Package { Id = "PKG3", Weight = 20 }
+                new Package { Name = "PKG1", Weight = 30 },
+                new Package { Name = "PKG2", Weight = 40 },
+                new Package { Name = "PKG3", Weight = 20 }
             };
 
             // Act
@@ -43,8 +41,8 @@ namespace DeliveryAppTest.Tests
             // Arrange
             var packages = new List<Package>
             {
-                new Package { Id = "PKG1", Weight = 10, Distance = 60 },
-                new Package { Id = "PKG2", Weight = 15, Distance = 80 }
+                new Package { Name = "PKG1", Weight = 10, Distance = 60 },
+                new Package { Name = "PKG2", Weight = 15, Distance = 80 }
             };
 
             // Act
@@ -60,9 +58,9 @@ namespace DeliveryAppTest.Tests
             // Arrange
             List<Package> packages = new List<Package>
             {
-                new Package { Id = "PKG1", Weight = 50, Distance =30},
-                new Package { Id = "PKG2", Weight = 120, Distance =125},
-                new Package { Id = "PKG3", Weight = 100, Distance =100},
+                new Package { Name = "PKG1", Weight = 50, Distance =30},
+                new Package { Name = "PKG2", Weight = 120, Distance =125},
+                new Package { Name = "PKG3", Weight = 100, Distance =100},
             };
             // Act
             var result = PackageShipment.GetMaxCombinedWeight(packages);
@@ -100,8 +98,8 @@ namespace DeliveryAppTest.Tests
             // Arrange
             List<Package> packages = new List<Package>
             {
-                new Package { Id = "PKG1", Weight = 250, Distance =30},
-                new Package { Id = "PKG2", Weight = 175, Distance =125},
+                new Package { Name = "PKG1", Weight = 250, Distance =30},
+                new Package { Name = "PKG2", Weight = 175, Distance =125},
             };
 
             // Act
@@ -131,9 +129,9 @@ namespace DeliveryAppTest.Tests
             // Arrange
             var packages = new List<Package>
             {
-                new Package { Id = "PKG1", Distance = 70 },
-                new Package { Id = "PKG2", Distance = 140 },
-                new Package { Id = "PKG3", Distance = 90 }
+                new Package { Name = "PKG1", Distance = 70 },
+                new Package { Name = "PKG2", Distance = 140 },
+                new Package { Name = "PKG3", Distance = 90 }
             };
 
             string pkg1 = "PKG1";
@@ -164,7 +162,7 @@ namespace DeliveryAppTest.Tests
             // Arrange
             var packages = new List<Package>
             {
-                new Package { Id = "PKG5", Distance = 200 }
+                new Package { Name = "PKG5", Distance = 200 }
             };
 
             using var sw = new StringWriter();
@@ -190,9 +188,9 @@ namespace DeliveryAppTest.Tests
 
             // Assert
             Assert.Equal(3, remaining.Count);
-            Assert.DoesNotContain(remaining, p => p.Id == "PKG1");
-            Assert.DoesNotContain(remaining, p => p.Id == "PKG2");
-            Assert.Contains(remaining, p => p.Id == "PKG3");
+            Assert.DoesNotContain(remaining, p => p.Name == "PKG1");
+            Assert.DoesNotContain(remaining, p => p.Name == "PKG2");
+            Assert.Contains(remaining, p => p.Name == "PKG3");
         }
 
         [Fact]
@@ -201,8 +199,8 @@ namespace DeliveryAppTest.Tests
             // Arrange
             List<Package> packages = new List<Package>
             {
-                new Package { Id = "PKG1", Weight = 50, Distance =30},
-                new Package { Id = "PKG2", Weight = 75, Distance =125},
+                new Package { Name = "PKG1", Weight = 50, Distance =30},
+                new Package { Name = "PKG2", Weight = 75, Distance =125},
             };
             // Act
             var remaining = PackageShipment.RemoveDeliveredPackages(packages, "PKG1", "PKG2");
