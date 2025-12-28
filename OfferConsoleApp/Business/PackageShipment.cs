@@ -1,6 +1,7 @@
-﻿using OfferConsoleApp.Common;
+﻿using OfferConsoleApp.Models;
+using OfferConsoleApp.Utils;
 
-namespace OfferConsoleApp
+namespace OfferConsoleApp.Business
 {
     public static class PackageShipment
     {
@@ -10,11 +11,11 @@ namespace OfferConsoleApp
         {
             List<Package> package = new List<Package>
             {
-                new Package { Name = "PKG1", Weight = 50, Distance =30},
-                new Package { Name = "PKG2", Weight = 75, Distance =125},
-                new Package { Name = "PKG3", Weight = 175, Distance =100},
-                new Package { Name = "PKG4", Weight = 110, Distance =60 },
-                new Package { Name = "PKG5", Weight = 155, Distance =95 },
+                new Package { Id = "PKG1", Weight = 50, Distance =30},
+                new Package { Id = "PKG2", Weight = 75, Distance =125},
+                new Package { Id = "PKG3", Weight = 175, Distance =100},
+                new Package { Id = "PKG4", Weight = 110, Distance =60 },
+                new Package { Id = "PKG5", Weight = 155, Distance =95 },
             };
             return package;
 
@@ -49,8 +50,8 @@ namespace OfferConsoleApp
                                 if (total > maxWeight)
                                 {
                                     maxWeight = total;
-                                    pkgs1 = pkg.Name;
-                                    pkgs2 = pkg1.Name;
+                                    pkgs1 = pkg.Id;
+                                    pkgs2 = pkg1.Id;
 
                                     if (!packageDtls.Contains(pkg))
                                     {
@@ -60,7 +61,7 @@ namespace OfferConsoleApp
                                     {
                                         packageDtls.Add(pkg1);
                                     }
-                                    result.Add((pkg.Name, pkg1.Name, total, packageDtls));
+                                    result.Add((pkg.Id, pkg1.Id, total, packageDtls));
                                 }
                             }
                         }
@@ -79,14 +80,14 @@ namespace OfferConsoleApp
 
             foreach (var item in packages)
             {
-                if (item.Name == Package1 || (item.Name == Package2))
+                if (item.Id == Package1 || (item.Id == Package2))
                 {
                     double estimatedTime = 0;
                     var distance = item.Distance;
                     estimatedTime = item.Distance / GlobalValues.MaxSpeed; // Formula: Time = Distance / Speed
                     int hours = (int)estimatedTime;
                     int minutes = (int)((estimatedTime - hours) * 60);
-                    Console.WriteLine($"Delivering {item.Name}\t {estimatedTime} hrs");
+                    Console.WriteLine($"Delivering {item.Id}\t {estimatedTime} hrs");
                     Console.WriteLine($"    {item.Distance}km / {GlobalValues.MaxSpeed}km/hr");
                     Console.WriteLine($"\n vehicle01 will be available after (2 * {totalTime}) = {2 * totalTime} hrs");
                 }
@@ -97,8 +98,8 @@ namespace OfferConsoleApp
         public static double GetEstimationTime(List<Package> packages, string Package1, string Package2)
         {
             double estimatedTime = 0;
-            Package package1 = packages.FirstOrDefault(w => w.Name == Package1);
-            Package package2 = packages.FirstOrDefault(w => w.Name == Package2);
+            Package package1 = packages.FirstOrDefault(w => w.Id == Package1);
+            Package package2 = packages.FirstOrDefault(w => w.Id == Package2);
             double time1 = package1.Distance / GlobalValues.MaxSpeed; // Formula: Time = Distance / Speed
             double time2 = package2.Distance / GlobalValues.MaxSpeed; // Formula: Time = Distance / Speed
             estimatedTime = time1 + time2;
@@ -108,7 +109,7 @@ namespace OfferConsoleApp
         //Return remaining packages after dilivered packages
         public static List<Package> RemoveDeliveredPackages(List<Package> packages, string Package1, string Package2)
         {
-            packages.RemoveAll(p => p.Name == Package1 || p.Name == Package2);
+            packages.RemoveAll(p => p.Id == Package1 || p.Id == Package2);
 
             return packages;
         }

@@ -1,5 +1,6 @@
-﻿using OfferConsoleApp;
-using OfferConsoleApp.Common;
+﻿using OfferConsoleApp.Business;
+using OfferConsoleApp.Data;
+using OfferConsoleApp.Utils;
 
 Console.WriteLine("=== Delivery Cost Calculator ===");
 
@@ -34,30 +35,12 @@ DeliveryCost.DisplayResult(GlobalValues.BaseDeliveryCost, weight, distance, offe
 
 Console.WriteLine("=== Package Shipment Details ===");
 Console.WriteLine(new string('-', 40));
-List<Package> avlPackages = PackageShipment.GetPackage();
 
-var combinations = PackageShipment.GetMaxCombinedWeight(avlPackages);
+var service = new DeliveryService();
+var packages = DummyDatabase.Packages;
+var vehicles = DummyDatabase.Vehicles;
+service.DeliverPackages(packages, vehicles);
 
-Console.WriteLine("Packages Remaining: " + $"{avlPackages.Count}");
-Console.WriteLine($"Vehicles Available: {GlobalValues.AvailableVehicle}  |  Current Time: {GlobalValues.CurrentTime}");
-
-
-Console.WriteLine(new string('-', 40));
-Console.WriteLine(new string('-', 40));
-foreach (var combo in combinations)
-{
-    double weight1 = combo.packageDetails.FirstOrDefault(w => w.Name == combo.Pkg1).Weight;
-    double weight2 = combo.packageDetails.FirstOrDefault(w => w.Name == combo.Pkg2).Weight;
-    Console.WriteLine($"{combo.Pkg1}({weight1} kg) + {combo.Pkg2}({weight2} kg) = {combo.TotalWeight} kg");
-}
-
-var maxCombo = combinations.OrderByDescending(x => x.TotalWeight).First();
-
-Console.WriteLine($"\nMax combined weight: {maxCombo.TotalWeight} kg ({maxCombo.Pkg1} + {maxCombo.Pkg2})");
-
-double totalTime = PackageShipment.GetEstimationTime(combinations.FirstOrDefault().packageDetails, maxCombo.Pkg1, maxCombo.Pkg2);
-
-PackageShipment.GetEstimationTimeDisplay(combinations.FirstOrDefault().packageDetails, maxCombo.Pkg1, maxCombo.Pkg2, totalTime);
-PackageShipment.RemoveDeliveredPackages(combinations.FirstOrDefault().packageDetails, maxCombo.Pkg1, maxCombo.Pkg2);
+Console.WriteLine("\nAll deliveries completed.");
 Console.ReadLine();
 
